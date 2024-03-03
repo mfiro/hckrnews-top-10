@@ -21,7 +21,7 @@ As an avid user of Telegram and a fan of its versatile API, I found it to be an 
 ### Running the Project
 The best way to run this script is by setting up a cron job on a server, allowing it to run automatically at specified times.
 #### Git scraping
-While not currently implemented in this project, it's possible to automate the script's execution using GitHub Actions, a method known as "git scraping." For more details, refer to [Simon Willison's blog post]([https://google.com](https://simonwillison.net/2020/Oct/9/git-scraping/)https://simonwillison.net/2020/Oct/9/git-scraping/) on git scraping.
+While not currently implemented in this project, it's possible to automate the script's execution using GitHub Actions, a method known as "git scraping." For more details, refer to [Simon Willison's blog post](https://simonwillison.net/2020/Oct/9/git-scraping/) on git scraping.
 
 ### About hnconnector
 This project uses [hnconnector](https://github.com/mfiro/hnconnector), a Python wrapper for the Hacker News API I developed. The library simplifies fetching stories from Hacker News, making it easier to integrate with personal projects like this one.

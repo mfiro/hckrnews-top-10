@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 
 top10/config.py
+.vscode/*

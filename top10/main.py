@@ -1,15 +1,15 @@
 import datetime
-import json
 import time
-from top10.config import CHAT_ID, CHAT_ID_TEST
-from top10.hn import Client
+from hn import Client
+
+from top10.TelegramAPI import Client as TGClient
+from top10.config import CHAT_ID, CHAT_ID_TEST, TELEGRAM_API_KEY
 from top10.helpers import save_json, load_json
-from top10.TelegramAPI import send_message
 
 
 if __name__ == '__main__':
-    # Configuration
     hn_client = Client()
+    telegram_client = TGClient(TELEGRAM_API_KEY)
     debug_mode = True
 
     today = datetime.datetime.utcnow().date()
@@ -56,6 +56,6 @@ if __name__ == '__main__':
         message += f"_Last updated: {datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC_"
 
     # Send the message
-    send_message(chat_id, message)
+    telegram_client.send_message(chat_id, message)
     
     

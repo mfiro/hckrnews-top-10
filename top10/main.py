@@ -1,4 +1,5 @@
 import datetime
+import logging
 import time
 from hn import Client
 
@@ -46,12 +47,12 @@ def fetch_best_stories(hn_client, filename):
     stories_data = []
     for story_id in sorted(best_stories, reverse=True):
         try:
-            print(f"Getting item {story_id}")
+            logging.info(f"Getting item {story_id}")
             story_data = hn_client.get_item(story_id)
             time.sleep(0.1)  # Respectful pause to avoid rate limiting
             stories_data.append(story_data)
         except Exception as e:
-            print(f"Failed to fetch story {story_id}: {e}")
+            logging.ERROR(f"Failed to fetch story {story_id}: {e}")
             continue  # Skip this story and continue with the next
     save_json(stories_data, filename)
 
@@ -103,23 +104,37 @@ def main():
     chat_id = CHAT_ID_TEST if debug_mode else CHAT_ID
 
     if not debug_mode:
+        logging.info("Start fetching data from the HN API (Live mode)")
         data = fetch_best_stories(hn_client, filename)
     else:
+        logging.info("Loading data (Debug mode)")
         data = load_json(filename)
         data = sorted(data, key=lambda x: x['score'], reverse=True)
-        
+
+    logging.info("Filtering today's stories ...")   
     todays_stories = filter_todays_stories(data, today)
     if not todays_stories and not debug_mode:  # fallback to yesterday's data if no today's stories
+        logging.info("Fallback to yesterday's data as no today's stories")
         todays_stories = filter_todays_stories(data, today - datetime.timedelta(days=1))
     
     if todays_stories:
+        logging.info("Creating Telegram message ...")
         message = create_message(todays_stories)
+        logging.info("Sending the message to Telegram...")
         telegram_client.send_message(chat_id, message)
     else:
-        print("No relevant stories to send.")
+        logging.info("No relevant stories to send.")
 
 
 if __name__ == '__main__':
+    logging.basicConfig(
+                        level=logging.INFO,
+                        format='%(asctime)s - %(levelname)s - %(message)s',
+                        filename='top10.log',
+                        filemode='a',
+                        )
+    logging.info("Starting the script ...")
     main()
+    logging.info("Finishing the script.")
 
     

@@ -87,10 +87,9 @@ def create_message(stories):
     """
     message = ""
     for no, story in enumerate(stories[:10], start=1):
-        message += f"{no}. {story['title']} | [Article]({story['url']}) | [Comments ({story['descendants']})](https://news.ycombinator.com/item?id={story['id']}) | Score:{story['score']}\n"
+        message += f"{no}. {story['title']} | [Article]({story.get('url')}) | [Comments ({story['descendants']})](https://news.ycombinator.com/item?id={story['id']}) | Score:{story['score']}\n"
     message += f"_Last updated: {datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC_"
     return message
-
 
 def main():
     """
